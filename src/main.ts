@@ -1,9 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import {
-  BadRequestException,
-  UnprocessableEntityException,
-  ValidationPipe,
-} from '@nestjs/common';
+import { BadRequestException, UnprocessableEntityException, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
@@ -42,15 +38,10 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
       transform: true,
       exceptionFactory: (errors) => {
-        const hasWeightSumViolation = errors.some((error) =>
-          Object.prototype.hasOwnProperty.call(
-            error.constraints ?? {},
-            'WeightSumConstraint',
-          ) ||
-          Object.prototype.hasOwnProperty.call(
-            error.constraints ?? {},
-            'ValidateCreditWeights',
-          ),
+        const hasWeightSumViolation = errors.some(
+          (error) =>
+            Object.prototype.hasOwnProperty.call(error.constraints ?? {}, 'WeightSumConstraint') ||
+            Object.prototype.hasOwnProperty.call(error.constraints ?? {}, 'ValidateCreditWeights'),
         );
 
         return hasWeightSumViolation

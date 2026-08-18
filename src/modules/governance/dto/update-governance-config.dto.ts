@@ -124,8 +124,7 @@ function ValidateCreditWeights(validationOptions?: ValidationOptions): ClassDeco
 }
 
 @ValidateCreditWeights({
-  message:
-    'weightVolumetric + weightNitrogen + weightPhosphorus must sum to 1.0 (±0.001).',
+  message: 'weightVolumetric + weightNitrogen + weightPhosphorus must sum to 1.0 (±0.001).',
 })
 export class UpdateGovernanceConfigDto {
   @IsOptional()
