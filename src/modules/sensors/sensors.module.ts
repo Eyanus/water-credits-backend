@@ -4,17 +4,19 @@ import { BullModule } from '@nestjs/bull';
 import { SensorsController } from './sensors.controller';
 import { SensorsService } from './sensors.service';
 import { SensorsGateway } from './sensors.gateway';
+import { SensorProjectAccessService } from './sensor-project-access.service';
 import { SensorsIngestionProcessor } from './sensors-ingestion.processor';
 import { SensorDevice } from './entities/sensor-device.entity';
 import { SensorReading } from './entities/sensor-reading.entity';
 import { ReadingBatch } from './entities/reading-batch.entity';
+import { GovernanceConfig } from '../governance/entities/governance-config.entity';
 import { ApiKeyGuard } from '../../common/guards/api-key.guard';
 import { AuthModule } from '../auth/auth.module';
 import { ProjectsModule } from '../projects/projects.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([SensorDevice, SensorReading, ReadingBatch]),
+    TypeOrmModule.forFeature([SensorDevice, SensorReading, ReadingBatch, GovernanceConfig]),
     AuthModule,
     ProjectsModule,
     BullModule.registerQueue({
@@ -29,7 +31,13 @@ import { ProjectsModule } from '../projects/projects.module';
     }),
   ],
   controllers: [SensorsController],
-  providers: [SensorsService, SensorsGateway, SensorsIngestionProcessor, ApiKeyGuard],
-  exports: [SensorsService, TypeOrmModule],
+  providers: [
+    SensorsService,
+    SensorsGateway,
+    SensorProjectAccessService,
+    SensorsIngestionProcessor,
+    ApiKeyGuard,
+  ],
+  exports: [SensorsService, SensorsGateway, TypeOrmModule],
 })
 export class SensorsModule {}
